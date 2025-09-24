@@ -130,7 +130,6 @@ Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
 │   ├── Test_data.csv
 │   ├── model_params.csv
 │   ├── residual_stats.csv
-│   ├── alerts_errors.csv
 │   ├── events_log.csv
     ├──thresholds_percentile.csv
     ├──thresholds_std.csv
