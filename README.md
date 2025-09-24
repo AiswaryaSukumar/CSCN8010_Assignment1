@@ -97,7 +97,7 @@ The system is designed for predictive maintenance, where early alerts flag trend
 ## Results Screenshots/Plots
 Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
 - **Regression Fits**: Scatter plots of training data with regression lines per axis.  
-  ![Regression Fits](Data/axis1_residuals_plot.png)  <!-- Replace with actual path after running -->
+  ![Regression Fits](data/axis1_residuals_plot.png)  <!-- Replace with actual path after running -->
 - **Residual Histograms**: Show normal distribution of residuals, guiding threshold selection.  
   ![Residual Histograms](Data/axis1_residuals_plot.png)  <!-- Replace with actual path -->
 - **Residuals with Alerts/Errors**: Example for axis1, showing residuals, MinC/MaxC lines, and annotated events.  
