@@ -15,8 +15,8 @@ The system is designed for predictive maintenance, where early alerts flag trend
 ## Setup Instructions
 1. **Clone the Repository**:
    ```bash
-   git clone <your-repo-url>
-   cd <repo-name>
+   git clone https://github.com/AiswaryaSukumar/CSCN8010_Assignment1.git
+   cd CSCN8010_Assignment1
    ```
 2. **Install Dependencies**:
    - Ensure Python 3.9 is installed.
@@ -77,14 +77,34 @@ The system is designed for predictive maintenance, where early alerts flag trend
 - Plots (scatter with regression lines, residual histograms) reveal outliers and patterns.
 
 ### Threshold Discovery
-- **MinC**: Alert threshold = 2 * residual_std per axis (~95th percentile, catches early outliers).
-- **MaxC**: Error threshold = 4 * residual_std per axis (~99.99th percentile, rare extremes).
-- **T**: Minimum duration = 20 seconds (matches synthetic data anomaly blocks, avoids transient noise).
-- **Justification**:
-  - Residual histograms confirm Gaussian-like distributions; 2*std and 4*std target significant deviations.
-  - Per-axis thresholds account for scale differences (e.g., axis2 std=6.9 vs axis8 std=0.4).
-  - T=20 sec aligns with anomaly block durations (20-25 sec) in synthetic data.
-  - Predictive maintenance context: MinC flags early trends (e.g., wear, for inspection); MaxC indicates critical failures (e.g., motor issues, urgent action).
+Threshold Discovery
+- MinC (Alert threshold): Set at the 95th percentile of positive residuals per axis.
+- This means only the top 5% of deviations above the regression line are flagged.
+- It helps catch unusual trends early without reacting too much to random noise.
+
+MaxC (Error threshold): Set at the 98th to 99th percentile of positive residuals per axis.
+- This captures only the extreme outliers, or the largest 1 to 2% of deviations.
+- It ensures that only truly abnormal, potentially critical events are raised as errors.
+
+- T (Time window): A continuous deviation of 10 seconds is needed to confirm an event.
+
+Justification for Percentile Method:
+
+- Residuals vary across different axes; for example, axis2 has a standard deviation of about 6.9, while axis8 has a standard deviation of about 0.4.
+
+- If we used a fixed numeric threshold, such as MinC=2, it might over-flag axis8 (small variance) and under-flag axis2 (large variance).
+
+- Percentiles automatically adjust for these differences, making thresholds specific to each axis and aware of scale.
+
+- Residual histograms show roughly Gaussian-like distributions. Using the 95th and 99th percentiles corresponds to values around 2σ and 3σ from the mean in a normal distribution, which is a common method for detecting outliers.
+
+Predictive maintenance context:
+
+- Alerts (greater than or equal to MinC for greater than or equal to T): signal early unusual consumption, prompting inspection or preventive action.
+
+- Errors (greater than or equal to MaxC for greater than or equal to T): flag critical failures needing immediate intervention.
+
+- Short spikes (less than T seconds) are ignored as noise.
 
 ### Alert and Error Rules
 - **Alert**: Residual ≥ MinC for ≥ T seconds continuously (early warning for trends).
@@ -96,12 +116,12 @@ The system is designed for predictive maintenance, where early alerts flag trend
 
 ## Results Screenshots/Plots
 Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
-- **Regression Fits**: Scatter plots of training data with regression lines per axis.  
-  ![Regression Fits](data/axis1_residuals_plot.png)  <!-- Replace with actual path after running -->
+- **Regression Fits**: Scatter plots of training data with regression lines per axis (axis1 example).  
+  ![Regression Fits](images/axis1_regression_fit_plot.png)  <!-- Replace with actual path after running -->
 - **Residual Histograms**: Show normal distribution of residuals, guiding threshold selection.  
-  ![Residual Histograms](Data/axis1_residuals_plot.png)  <!-- Replace with actual path -->
+  ![Residual Histograms](images/axis1_histograms_plot.png)  <!-- Replace with actual path -->
 - **Residuals with Alerts/Errors**: Example for axis1, showing residuals, MinC/MaxC lines, and annotated events.  
-  ![Axis1 Residuals](Data/axis1_residuals_plot.png)
+  ![Axis1 Residuals](images/axis1_residuals_plot.png)
 
 ## Repository Structure
 ```
@@ -111,7 +131,12 @@ Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
 │   ├── model_params.csv
 │   ├── residual_stats.csv
 │   ├── alerts_errors.csv
-│   ├── <axis>_residuals_plot.png
+│   ├── events_log.csv
+    ├──thresholds_percentile.csv
+    ├──thresholds_std.csv
+├── images/
+    ├──axis1_histograms_plot
+    ├──axis1_histograms_plot
 ├── Streaming_Regression.ipynb
 ├── synthetic_data.py
 ├── requirements.txt
