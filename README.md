@@ -57,7 +57,7 @@ The system is designed for predictive maintenance, where early alerts flag trend
    - `Data/model_params.csv`: Regression slopes/intercepts.
    - `Data/residual_stats.csv`: Residual mean/std per axis.
    - `Data/alerts_errors.csv`: Logged alert/error events.
-   - `Data/<axis>_residuals_plot.png`: Plots for each axis with alerts/errors.
+   - `images/<axis>_residuals_plot.png`: Plots for each axis with alerts/errors.
 
 ## Regression and Alert Rules Explanation
 ### Regression Models
@@ -121,7 +121,7 @@ Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
 - **Residual Histograms**: Show normal distribution of residuals, guiding threshold selection.  
   ![Residual Histograms](images/axis1_histograms_plot.png)  <!-- Replace with actual path -->
 - **Residuals with Alerts/Errors**: Example for axis1, showing residuals, MinC/MaxC lines, and annotated events.  
-  ![Axis1 Residuals](images/axis1_residuals_plot.png)
+  ![Axis1 Residuals](images/all_axes_residuals_with_alerts_errors.png)
 
 ## Repository Structure
 ```
@@ -137,6 +137,7 @@ Below are key visualizations (see `Streaming_Regression.ipynb` for all outputs):
 ├── images/
     ├──axis1_histograms_plot
     ├──axis1_histograms_plot
+       all_axes_residuals_with_alerts_errors
 ├── Streaming_Regression.ipynb
 ├── synthetic_data.py
 ├── requirements.txt
